@@ -8,12 +8,15 @@
 int main() {
 
     int period=0, counter=0;
-    //std::cout << "Enter the counter period(from 1s to 3s):\n";
-    //std::cin >> period;
+
+    std::cout << "Enter the counter period(from 1mS to 1s):\n";
+    std::cin >> period;
+
+
 
     while(true)
     {
-        sleep(1);
+        sleep(period);
         std::cout << "Counter: " << ++counter << std::endl;
     }
 

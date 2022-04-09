@@ -8,6 +8,8 @@
 
 using std::cout; using std::endl;
 
+
+
 int main() {
     pid_t w_pid;
     int status;
@@ -35,7 +37,6 @@ int main() {
                           << "A new child process started! " << '\n';
 
                 c_pid = fork();
-
                 if(c_pid == 0) execl("../../child/build/child", "child", NULL);
 
             }
@@ -59,5 +60,5 @@ int main() {
 
     }
 
-return EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
