@@ -5,5 +5,5 @@
 #include<iostream>
 
 int main() {
-    std::cout << "HELLO FROM CHILD PROCESS!!!";
+    std::cout << "HELLO FROM CHILD PROCESS!!!\n";
 }
