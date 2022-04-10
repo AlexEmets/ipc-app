@@ -5,15 +5,20 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include <ctime>
-
+#include <cstdio>
+#define MSGSIZE 16
 using std::cout; using std::endl;
 
 
 
 int main() {
+
     pid_t w_pid;
     int status;
+    int p[2];
+
     pid_t c_pid = fork();
+
 
     if (c_pid == -1) {
         perror("fork");
@@ -21,9 +26,11 @@ int main() {
     }
     else if (c_pid == 0) {
         execl("../../child/build/child", "child", NULL);
+
     }
     else {
         std::cout << "CHILD's PID=" << c_pid << '\n';
+
         while (true) {
             w_pid = waitpid(c_pid, &status, WUNTRACED);
 
@@ -48,7 +55,6 @@ int main() {
 
                 if(c_pid == 0) execl("../../child/build/child", "child", NULL);
 
-                //               system("../../child/build/child");
             }
             else if (WIFSTOPPED(status)) {
                 std::cout << "Child process was stopped." << std::endl;
@@ -56,7 +62,6 @@ int main() {
 
         }
 
-        std::cout << "Parent process is exiting because child is terminated. Bye!\n";
 
     }
 
