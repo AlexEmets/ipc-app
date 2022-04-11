@@ -7,3 +7,4 @@ RUN apt-get update && \
 
 # docker build --tag ubuntu_basic . \
 # docker run --rm -it --mount type=bind,source=%cd%\,target=/home/ipc-app ubuntu_basic
+# docker exec -it <ID> /bin/bash

@@ -25,6 +25,8 @@ static void sigintHandler(int signal) {
     fprintf(fptr, "%d", counter);
     exit(0);
 
+
+    close(fptr);
 }
 
 int main() {

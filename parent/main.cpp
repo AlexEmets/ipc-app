@@ -6,12 +6,18 @@
 #include <unistd.h>
 #include <ctime>
 #include <cstdio>
+#include <fstream>
 #define MSGSIZE 16
+
 using std::cout; using std::endl;
 
-
+constexpr char counterLastValue[] = "counterLastValue";
 
 int main() {
+
+    std::ofstream ofs;
+    ofs.open(counterLastValue, std::ofstream::out | std::ofstream::trunc);
+    ofs.close();
 
     pid_t w_pid;
     int status;
@@ -19,12 +25,12 @@ int main() {
 
     pid_t c_pid = fork();
 
-
     if (c_pid == -1) {
         perror("fork");
         exit(EXIT_FAILURE);
     }
     else if (c_pid == 0) {
+        //TODO: replace first argument with a constant
         execl("../../child/build/child", "child", NULL);
 
     }
@@ -44,6 +50,7 @@ int main() {
                           << "A new child process started! " << '\n';
 
                 c_pid = fork();
+                //TODO: replace first argument with a constant
                 if(c_pid == 0) execl("../../child/build/child", "child", NULL);
 
             }
@@ -52,7 +59,7 @@ int main() {
                           << "A new child process started! " << status << '\n';
 
                 c_pid = fork();
-
+                //TODO: replace first argument with a constant
                 if(c_pid == 0) execl("../../child/build/child", "child", NULL);
 
             }
