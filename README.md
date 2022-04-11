@@ -1,38 +1,41 @@
 # ipc-app
 
-### Conditions 
+### Project agenda
+Project is consist of two applications: `parent` and `child`. When the parent process
+starts, it also starts the `child` process and observes the state of `child` application.
+When `child` executable is terminated or crashed, it's immediately executed by `parent` application 
 
-  - Use GIT (GitHub) and just share the link to project with implementation
-  
-  - Project should be base on CMake
-  - All interfaces should be POSIX compliant
-  - Target OS: Linux
-  - Language: C/C++11
-  - Usage of RAII idioms (Nice to have)
+#### Full task conditions you cat find in `taskConditions.pdf` file in the root of this project
 
-Task:
-Create 2 applications:
+### How to test
+1. `Compile child` subproject:
+   - cd child/
+   - mkdir build(!!this name is obligatory and hardcoded inside this version of application!!)
+   - cd build/
+   - cmake ..
+   - cmake --build .
+2. `Compile and execute parent` subproject:
+    - cd parent/
+    - mkdir build(!!this name is obligatory and hardcoded inside this version of application!!)
+    - cd build/
+    - cmake ..
+    - cmake --build .
+    - ./parent
 
-### Requirement#1:
+After `parent` process is executed, you can `input the period` of counter in `child` process(from 1ms to 1000ms). 
+When number is entered you'll see the value of counter printed in stdout every second. The value of counter depends on period you entered.
 
-First application "Parent" should create a new process "Child" and re-start the "Child" process in
-case it crashes (or can be killed by SIGTERM from console).
+Now you maybe want to `kill the child` process by open one more terminal and write `kill <pid>`, where `<pid>` is PID of child process(can be obtained by `top` command).
+After child process is killed, new process will be started by parent application.
 
-### Requirement#2:
+### OS/environment
+Application was tested inside ubuntu:20.04 based docker container.
 
-During normal flow a "Child" process will increase internal counter with period from 1mS to 1S
-(period should be possible to set via command line argument)
+### Technology used
+- g++
+- CMake
+- Docker
+- gcc(posix compliant system calls)
+- bash
+    
 
-### Requirement#3:
-
-In case "Child" process becomes terminated, it shall be restarted by "Parent" process and the
-counter should continue from the previous successful value. (The result should be clearly visible
-on console with period 1S in case some printing done in stdout)
-Output:
-1) Output from console (can be stored in file) with:
-- Starting “Parent” process (counting period 1 Sec);
-- "Child" process log counter’s value in stdout
-- "Child" process killed by SIGTERM from console and re-started by "Parent" process
-(should be visible hello message during starting of "Child" )
-- "Child" process should continue counting after restart
-2) Link to source code in GitHub/Gitlab
