@@ -9,6 +9,7 @@
 #include<csignal>
 #include <cstdio>
 #include <cstring>
+#include <limits>
 
 
 extern size_t counter;
@@ -17,7 +18,11 @@ extern FILE *fptr;
 namespace {
     constexpr char counterLastValueFileName[] = "counterLastValue";
 }
+void startCounter(const size_t period);
+
+void outputValueOfCounter();
 
 void sigintHandler(int signal);
+
 void getValueOfCounter();
 #endif //IPC_APPLICATION_CHILD_H

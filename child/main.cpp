@@ -10,27 +10,6 @@
 #include <thread>
 #include"child.h"
 
-
-void startCounter(const size_t period) {
-    while(true)
-    {
-        //sleep in microseconds. // micro * 1000 == milli
-        usleep(1000*period);
-        counter++;
-        if(counter == std::numeric_limits<size_t>::max()) {
-            throw std::overflow_error("Counter is overflowed!");
-        }
-    }
-}
-
-
-void outputValueOfCounter() {
-    while(true) {
-        sleep(1);
-        std::cout << "Counter: " << counter << std::endl;
-    }
-}
-
 int main() {
     signal(SIGINT, sigintHandler);
     signal(SIGKILL, sigintHandler);
@@ -50,4 +29,5 @@ int main() {
     }catch(std::exception& exc) {
         std::cout << exc.what() << '\n' << "Terminating the child process...\n";
     }
+
 }
