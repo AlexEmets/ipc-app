@@ -4,7 +4,7 @@
 
 #include "child.h"
 
-int counter = 0;
+size_t counter = 0;
 FILE *fptr = nullptr;
 
 void sigintHandler(int signal) {
@@ -16,12 +16,12 @@ void sigintHandler(int signal) {
         // exit status for OS that an error occurred
     }
 
-    fprintf(fptr, "%d", counter);
+    fprintf(fptr, "%ld", counter);
     exit(0);
 
 }
 
 void getValueOfCounter() {
     fptr = fopen(counterLastValueFileName, "r");
-    if(fscanf (fptr, "%d", &counter) == EOF) counter=0;
+    if(fscanf (fptr, "%ld", &counter) == EOF) counter=0;
 }

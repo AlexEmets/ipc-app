@@ -11,7 +11,7 @@
 #include <cstring>
 
 
-extern int counter;
+extern size_t counter;
 extern FILE *fptr;
 
 namespace {

@@ -11,12 +11,15 @@
 #include"child.h"
 
 
-void startCounter(const int period) {
+void startCounter(const size_t period) {
     while(true)
     {
         //sleep in microseconds. // micro * 1000 == milli
         usleep(1000*period);
         counter++;
+        if(counter == std::numeric_limits<size_t>::max()) {
+            throw std::overflow_error("Counter is overflowed!");
+        }
     }
 }
 
@@ -33,15 +36,18 @@ int main() {
     signal(SIGKILL, sigintHandler);
     signal(SIGTERM, sigintHandler);
 
-    int period = 0;
+    size_t period = 0;
     getValueOfCounter();
 
-    std::cout << "Enter the counter period(from 1mS to 1s):\n";
+    std::cout << "Enter the counter period(from 1mS to 1000ms(1s)):\n";
     std::cin >> period;
 
     std::thread t_outputValueOfCounter(outputValueOfCounter);
-    t_outputValueOfCounter.detach();
+    try {
+        t_outputValueOfCounter.detach();
 
-    startCounter(period);
-
+        startCounter(period);
+    }catch(std::exception& exc) {
+        std::cout << exc.what() << '\n' << "Terminating the child process...\n";
+    }
 }
