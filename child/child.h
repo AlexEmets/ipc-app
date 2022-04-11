@@ -11,9 +11,10 @@
 #include <cstring>
 
 
+extern int counter;
+extern FILE *fptr;
+
 namespace {
-    int period = 0, counter = 0;
-    FILE *fptr;
     constexpr char counterLastValueFileName[] = "counterLastValue";
 }
 

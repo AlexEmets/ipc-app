@@ -11,6 +11,10 @@ void parent::execute() {
     int status;
     int p[2];
 
+    //get child's executable relative path.
+    snprintf(childProcessCommandRelativePath, sizeof(childProcessCommandRelativePath), "%s%s%s%s%s%s",
+             "../../", childProcessName, "/", buildDirectoryName, "/", childProcessName);
+
     pid_t c_pid = fork();
 
     if (c_pid == -1) {
@@ -26,12 +30,6 @@ void parent::execute() {
     }
     else {
         std::cout << "CHILD's PID=" << c_pid << '\n';
-
-
-        //get child's executable relative path.
-        snprintf(childProcessCommandRelativePath, sizeof(childProcessCommandRelativePath), "%s%s%s%s%s%s",
-                 "../../", childProcessName, "/", buildDirectoryName, "/", childProcessName);
-
 
         while (true) {
             w_pid = waitpid(c_pid, &status, WUNTRACED);

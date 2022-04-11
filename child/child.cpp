@@ -4,6 +4,9 @@
 
 #include "child.h"
 
+int counter = 0;
+FILE *fptr = nullptr;
+
 void sigintHandler(int signal) {
 
     fptr = fopen(counterLastValueFileName, "w");
