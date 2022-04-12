@@ -10,13 +10,16 @@
 #include <thread>
 #include"child.h"
 
-int main() {
+int main(int argc, char** argv) {
     signal(SIGINT, sigintHandler);
     signal(SIGKILL, sigintHandler);
     signal(SIGTERM, sigintHandler);
 
     size_t period = 0;
-    getValueOfCounter();
+
+    if(argc>1) {
+        getValueOfCounter(argv[1]);
+    }
 
     std::cout << "Enter the counter period(from 1mS to 1000ms(1s)):\n";
     std::cin >> period;

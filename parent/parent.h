@@ -11,6 +11,7 @@
 #include <ctime>
 #include <cstdio>
 #include <fstream>
+#include <string>
 
 namespace {
 

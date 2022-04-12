@@ -24,5 +24,5 @@ void outputValueOfCounter();
 
 void sigintHandler(int signal);
 
-void getValueOfCounter();
+void getValueOfCounter(char* valueString);
 #endif //IPC_APPLICATION_CHILD_H

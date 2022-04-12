@@ -37,11 +37,10 @@ void sigintHandler(int signal) {
     }
 
     fprintf(fptr, "%ld", counter);
-    exit(0);
+    exit(counter);
 
 }
 
-void getValueOfCounter() {
-    fptr = fopen(counterLastValueFileName, "r");
-    if(fscanf (fptr, "%ld", &counter) == EOF) counter=0;
+void getValueOfCounter(char* valueString) {
+    counter= atoi(valueString);
 }

@@ -10,7 +10,7 @@ void parent::execute() {
     pid_t w_pid;
     int status;
     int p[2];
-
+    int valueOfChildCounter=0;
     //get child's executable relative path.
     snprintf(childProcessCommandRelativePath, sizeof(childProcessCommandRelativePath), "%s%s%s%s%s%s",
              "../../", childProcessName, "/", buildDirectoryName, "/", childProcessName);
@@ -40,11 +40,16 @@ void parent::execute() {
             }
 
             if (WIFEXITED(status)) {
-                std::cout << "Child process was exited." << std::endl
+                valueOfChildCounter = WEXITSTATUS(status);
+                std::cout << "Child process was exited " << std::endl
                           << mNewChildProcessStarted << '\n';
 
                 c_pid = fork();
-                if(c_pid == 0) execl(childProcessCommandRelativePath, childProcessName, NULL);
+                char s_valueOfChildCounter[128];
+                std::sprintf(s_valueOfChildCounter, "%d", valueOfChildCounter);
+
+                if(c_pid == 0) execl(childProcessCommandRelativePath, childProcessName,
+                                     s_valueOfChildCounter, NULL);
 
             }
             else if (WIFSIGNALED(status)) {
@@ -52,7 +57,13 @@ void parent::execute() {
                           << mNewChildProcessStarted << status << '\n';
 
                 c_pid = fork();
-                if(c_pid == 0) execl(childProcessCommandRelativePath, childProcessName, NULL);
+
+
+                char s_valueOfChildCounter[128];
+                std::sprintf(s_valueOfChildCounter, "%d", valueOfChildCounter);
+
+                if(c_pid == 0) execl(childProcessCommandRelativePath, childProcessName,
+                                     s_valueOfChildCounter, NULL);
 
             }
             else if (WIFSTOPPED(status)) {
