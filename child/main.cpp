@@ -18,6 +18,7 @@ int main(int argc, char** argv) {
     size_t period = 0;
 
     if(argc>1) {
+        std::cout << argv[1] << std::endl;
         getValueOfCounter(argv[1]);
     }
 

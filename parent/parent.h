@@ -15,10 +15,10 @@
 
 namespace {
 
-    constexpr char counterLastValueFileName[] = "counterLastValue";
-    constexpr char childProcessName[] = "child";
-    constexpr char buildDirectoryName[] = "build";
-    constexpr char mNewChildProcessStarted[] = "New child process was started!";
+    constexpr char kCounterLastValueFileName[] = "counterLastValue";
+    constexpr char kChildProcessName[] = "child";
+    constexpr char kBuildDirectoryName[] = "build";
+    constexpr char kNewChildProcessStarted[] = "New child process was started!";
 
 }
 
@@ -27,7 +27,7 @@ namespace parent {
 
     // Main function for executing parent and child processes.
     // After child process is killed, parent process executes it again.
-    void execute();
+    void execute(const char * pathToChildProcess);
 
     // After child process is killed, it writes the last value of the counter to the file.
     // We should clear this file when the parent process is started

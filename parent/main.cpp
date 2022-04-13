@@ -8,13 +8,17 @@
 #include <cstdio>
 #include <fstream>
 #include "parent.h"
+#include <sys/mman.h>
 #define MSGSIZE 16
 
 
-int main() {
+//../../child/build/child
+int main(int argc, char * argv[]) {
 
-    parent::clearCounterValueFile();
-    parent::execute();
+    if(argc < 2) return std::cout << "Path to child application wasn't entered:(\n"
+                                     "Please, pass the relative/absolute path in cmd argument\n",0;
+
+    parent::execute(argv[1]);
 
     return 0;
 }

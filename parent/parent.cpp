@@ -4,16 +4,12 @@
 
 #include "parent.h"
 
-void parent::execute() {
+void parent::execute(const char * pathToChildProcess) {
 
-    char childProcessCommandRelativePath[128];
     pid_t w_pid;
     int status;
     int p[2];
     int valueOfChildCounter=0;
-    //get child's executable relative path.
-    snprintf(childProcessCommandRelativePath, sizeof(childProcessCommandRelativePath), "%s%s%s%s%s%s",
-             "../../", childProcessName, "/", buildDirectoryName, "/", childProcessName);
 
     pid_t c_pid = fork();
 
@@ -25,11 +21,10 @@ void parent::execute() {
     else if (c_pid == 0) {
 
         //execute child process
-        execl(childProcessCommandRelativePath, childProcessName, NULL);
+        execl(pathToChildProcess, kChildProcessName, NULL);
 
     }
     else {
-        std::cout << "CHILD's PID=" << c_pid << '\n';
 
         while (true) {
             w_pid = waitpid(c_pid, &status, WUNTRACED);
@@ -40,29 +35,20 @@ void parent::execute() {
             }
 
             if (WIFEXITED(status)) {
+
+                // get the value of counter from child app. (The value is returned by child application(exit(counter)))
                 valueOfChildCounter = WEXITSTATUS(status);
-                std::cout << "Child process was exited " << std::endl
-                          << mNewChildProcessStarted << '\n';
 
-                c_pid = fork();
+                // int value -> char* value(to pass the value as argv parameter to child application)
                 char s_valueOfChildCounter[128];
                 std::sprintf(s_valueOfChildCounter, "%d", valueOfChildCounter);
 
-                if(c_pid == 0) execl(childProcessCommandRelativePath, childProcessName,
-                                     s_valueOfChildCounter, NULL);
-
-            }
-            else if (WIFSIGNALED(status)) {
-                std::cout << "Child process was killed."
-                          << mNewChildProcessStarted << status << '\n';
+                std::cout << "Child process was exited with value of counter " << valueOfChildCounter << std::endl
+                          << kNewChildProcessStarted << '\n';
 
                 c_pid = fork();
 
-
-                char s_valueOfChildCounter[128];
-                std::sprintf(s_valueOfChildCounter, "%d", valueOfChildCounter);
-
-                if(c_pid == 0) execl(childProcessCommandRelativePath, childProcessName,
+                if(c_pid == 0) execl(pathToChildProcess, kChildProcessName,
                                      s_valueOfChildCounter, NULL);
 
             }
@@ -77,7 +63,7 @@ void parent::execute() {
 
 void parent::clearCounterValueFile() {
     std::ofstream ofs;
-    ofs.open(counterLastValueFileName, std::ofstream::out | std::ofstream::trunc);
+    ofs.open(kCounterLastValueFileName, std::ofstream::out | std::ofstream::trunc);
     ofs.close();
 }
 
