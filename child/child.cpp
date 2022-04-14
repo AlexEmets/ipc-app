@@ -36,3 +36,16 @@ void sigintHandler(int signal) {
 void getValueOfCounter(char* valueString) {
     counter= atoi(valueString);
 }
+
+char * attachMemoryBlock(char* fileName, int size) {
+    int sharedBlockID = getSharedBlock(fileName, size);
+    char * result;
+
+    std::cout << "Block ID: " << sharedBlockID << std::endl;
+
+    result = (char*)shmat(sharedBlockID, NULL, 0);
+    if(result == (char*)-1) {
+        return nullptr;
+    }
+    return result;
+}

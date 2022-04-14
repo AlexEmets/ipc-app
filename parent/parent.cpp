@@ -61,6 +61,19 @@ void parent::execute(const char * pathToChildProcess) {
 
 }
 
+char * attachMemoryBlock(char* fileName, int size) {
+    int sharedBlockID = getSharedBlock(fileName, size);
+    char * result;
+
+    std::cout << "Block ID: " << sharedBlockID << std::endl;
+
+    result = (char*)shmat(sharedBlockID, NULL, 0);
+    if(result == (char*)-1) {
+        return nullptr;
+    }
+    return result;
+}
+
 void parent::clearCounterValueFile() {
     std::ofstream ofs;
     ofs.open(kCounterLastValueFileName, std::ofstream::out | std::ofstream::trunc);

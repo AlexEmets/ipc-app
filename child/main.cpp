@@ -10,12 +10,18 @@
 #include <thread>
 #include"child.h"
 
+
+char fileName[] = "../../parent/build/sharedFile.txt";
+int sizeFile = 128;
+
 int main(int argc, char** argv) {
     signal(SIGINT, sigintHandler);
     signal(SIGKILL, sigintHandler);
     signal(SIGTERM, sigintHandler);
 
     size_t period = 0;
+    char* sharedMemoryPointer = attachMemoryBlock(fileName, sizeFile);
+    std::cout << sharedMemoryPointer;
 
     if(argc>1) {
         std::cout << argv[1] << std::endl;

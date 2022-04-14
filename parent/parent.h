@@ -12,6 +12,8 @@
 #include <cstdio>
 #include <fstream>
 #include <string>
+#include <sys/shm.h>
+#include <sys/ipc.h>
 
 namespace {
 
@@ -22,6 +24,16 @@ namespace {
 
 }
 
+//returns the Shared Memory Block's ID
+static int getSharedBlock(char* fileName, int size) {
+    key_t key;
+
+    key = ftok(fileName, 0);
+    if(key == -1) {return -1;}
+    return shmget(key, size, 0644 | IPC_CREAT);
+}
+
+char * attachMemoryBlock(char* fileName, int size);
 
 namespace parent {
 
